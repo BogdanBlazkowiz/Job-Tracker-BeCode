@@ -38,6 +38,12 @@ module.exports.getJobs = async (req, res) => {
     res.status(200).json(jobs);
 }
 
+module.exports.getJob = async (req, res) => {
+    const id = req.params.id;
+    job = await Job.findById(id);
+    res.status(200).json(job);
+}
+
 module.exports.postJob = async (req, res) => {
     const {
         jobTitle,
@@ -75,14 +81,33 @@ module.exports.updateJob = async (req, res) => {
     let update = req.body;
     try {
         job = await Job.findById(id);
-    Object.keys(update).forEach((updateEntry) => {
-        job[updateEntry] = update[updateEntry];
-    })
-    await job.save();
-    res.status(201).json(job);
+        Object.keys(update).forEach((updateEntry) => {
+            job[updateEntry] = update[updateEntry];
+        })
+        await job.save();
+        res.status(201).json(job);
     }
     catch (err) {
         errors = handleErrors(err);
         res.status(400).json(errors);
+    }
+}
+
+
+module.exports.deleteJob = async (req, res) => {
+    let id = req.params.id;
+    const job = await Job.findById(id);
+    if (job) {
+        try {
+            await Job.deleteOne({_id: id});
+            console.log(job)
+            res.status(201).json({message: `Job ${id} has been succesfully deleted.`})
+        }
+        catch (err) {
+            res.status(400).json(err);
+        }
+    }
+    else {
+        res.status(400).json({error: "No job was found with that id."})
     }
 }
