@@ -11,13 +11,7 @@ const jobSchema = new mongoose.Schema({
     },
     website: {
         type: String,
-        required: [true, "Please enter a website domain."],
-        validate: {
-            validator: function(v) {
-                return websiteExpression.test(v);
-            },
-            message: props => `${props.value} is not a valid website URL.`
-        }
+        required: [true, "Please enter a website domain."]
     },
     employerName: {
         type: String,
@@ -27,7 +21,7 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please enter an employer email."],
         lowercase: true,
-        validate: [isEmail, "Please enter a valid email"]
+        validate: [isEmail, "Please enter a valid email."]
     },
     employerPhone: {
         type: String,
@@ -36,7 +30,7 @@ const jobSchema = new mongoose.Schema({
             validator: function(v) {
                 return phoneNumberExpression.test(v);
             },
-            message: props => `${props.value} is not a valid phone number.`
+            message: props => `Invalid phone number, please use the format +11 111-111-1111.`
         }
     },
     employerAddress: {
