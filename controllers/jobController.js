@@ -69,3 +69,20 @@ module.exports.postJob = async (req, res) => {
         res.status(400).json(errors);
     }
 }
+
+module.exports.updateJob = async (req, res) => {
+    let id = req.params.id;
+    let update = req.body;
+    try {
+        job = await Job.findById(id);
+    Object.keys(update).forEach((updateEntry) => {
+        job[updateEntry] = update[updateEntry];
+    })
+    await job.save();
+    res.status(201).json(job);
+    }
+    catch (err) {
+        errors = handleErrors(err);
+        res.status(400).json(errors);
+    }
+}

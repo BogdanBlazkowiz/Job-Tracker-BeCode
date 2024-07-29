@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const { isEmail } = require("validator");
 
-const websiteExpression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
 const phoneNumberExpression = /\+\d{2} \d{3}-\d{3}-\d{4}/
 
 const jobSchema = new mongoose.Schema({
