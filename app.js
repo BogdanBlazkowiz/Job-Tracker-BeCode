@@ -7,22 +7,19 @@ const router = require("./routes/router");
 const basePath = __dirname;
 const port = process.env.PORT || 3000;
 const dbURI = "mongodb://127.0.0.1:27017/jobTracker";
-
+const cookieParser = require("cookie-parser");
+const { requireAuth, checkUser } = require("./middlewares/authMiddleware");
 
 const app = express();
 
 app.use(express.json());
+app.use(express.static("public"));
+app.use(cookieParser());
 app.use(methodOverride("_method"));
 
 mongoose.connect(dbURI)
 
-// let listOfStuff = "Job TitleWebsite
-// Employee Name, Email, Phone, Adress
-// Origin,
-//  spontaneous or offerStatus,
-//   Interested, CV sent, negative, interviewComments";
-
-
+app.get("*", checkUser);
 app.use(router);
 
 
