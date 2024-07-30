@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 const { isEmail } = require("validator");
 
@@ -46,6 +47,14 @@ const jobSchema = new mongoose.Schema({
     },
     notes: {
         type: String,
+    },
+    userId: {
+        type: ObjectId,
+        required: true
+    },
+    dateOfCreation: {
+        type: Date,
+        default: Date.now()
     }
 })
 

@@ -1,4 +1,5 @@
 const Job = require("../schemas/Job");
+const jwt = require("jsonwebtoken");
 
 function handleErrors (err) {
     let errors = { jobTitle: "",
@@ -28,6 +29,7 @@ function handleErrors (err) {
 //     "employerEmail": "webdev@employer.com",
 //     "employerPhone": "+32 400-400-4004",
 //     "employerAdress": "Web dev avenue, 120",
+//     "dateOfCreation": "",
 //     "origin": "Job offer",
 //     "status": "sent CV",
 //     "notes": "None"
@@ -45,6 +47,16 @@ module.exports.getJob = async (req, res) => {
 }
 
 module.exports.postJob = async (req, res) => {
+    const token = req.cookies.jwt;
+    let useId = "";
+    jwt.verify(token, "secretString", (err, decodedToken) => {
+        if (err) {
+            res.redirect("/login");
+        }
+        else {
+            userId = decodedToken.id;
+        }
+    });
     const {
         jobTitle,
         website,
@@ -66,7 +78,8 @@ module.exports.postJob = async (req, res) => {
             employerAddress,
             origin,
             status,
-            notes
+            notes,
+            userId
         })
         res.status(201).json(jobApplication);
     }

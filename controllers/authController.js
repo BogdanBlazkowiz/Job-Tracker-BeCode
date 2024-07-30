@@ -1,5 +1,6 @@
 const User = require("../schemas/User")
 const jwt = require("jsonwebtoken");
+const { cvFileUpload, profilePictureFileUpload } = require("../controllers/storageController");
 
 const maxAge = 3 * 86400;
 
@@ -50,7 +51,19 @@ module.exports.logoutGet = (req, res) => {
 }
 
 module.exports.signupPost = async (req, res) => {
-    const { email, password, firstName, lastName, cvLink, githubLink, profilePictureLink } = req.body;
+    const { email, password, firstName, lastName, githubLink} = req.body;
+    const cvFile = req.files['cvFile'] ? req.files['cvFile'][0] : null;
+    const profilePicture = req.files['profilePicture'] ? req.files['profilePicture'][0] : null;
+    let cvLink = "";
+    let profilePictureLink = "";
+    if (cvFile) {
+        cvLink = await cvFileUpload(cvFile.buffer);
+        cvLink = cvLink.secure_url;
+    }
+    if (profilePicture) {
+        profilePictureLink = await profilePictureFileUpload(profilePicture.buffer);
+        profilePictureLink = profilePictureLink.secure_url;
+    }
     try {
         const user = await User.create({
             email,
@@ -74,6 +87,7 @@ module.exports.signupPost = async (req, res) => {
 
 module.exports.loginPost = async (req, res) => {
     const { email, password } = req.body;
+    console.log(req.body, "tes")
     try {
         const user = await User.login(email, password);
         const token = createToken(user._id);

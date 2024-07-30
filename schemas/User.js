@@ -25,12 +25,15 @@ const userSchema = new mongoose.Schema({
     },
     githubLink : {
         type: String,
+        default: ""
     },
     profilePictureLink: {
-        type: String
+        type: String,
+        default: ""
     },
     cvLink: {
-        type: String
+        type: String,
+        default: ""
     }
 })
 
