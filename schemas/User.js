@@ -34,6 +34,15 @@ const userSchema = new mongoose.Schema({
     cvLink: {
         type: String,
         default: ""
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
+    }
+},
+{
+    toJSON: {
+        getters: true
     }
 })
 
@@ -43,6 +52,7 @@ userSchema.post("save", function (doc, next) {
     next();
 })
 
+// function before create schema child, encrypts password
 userSchema.pre("save", async function (next) {
     const salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt);

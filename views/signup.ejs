@@ -1,0 +1,85 @@
+<%- include("partials/head.ejs") -%>
+<body>
+    <form>
+        <h2>Sign up</h2>
+        <label for="email">Email:</label>
+        <input type="text" name="email" required/>
+        <div class="email error"></div>
+        <label for="firstName">Firstname:</label>
+        <input type="text" name="firstName" required/>
+        <div class="firstName error"></div>
+        <label for="lastName">Lastname:</label>
+        <input type="text" name="lastName" required/>
+        <div class="lastName error"></div>
+        <label for="password">Password:</label>
+        <input type="password" name="password" required/>
+        <div class="password error"></div>
+        <label for="passwordConf">Password confirmation:</label>
+        <input type="password" name="passwordConf" required/>
+        <div class="passwordConf error"></div>
+        <label for="githubLink">Github Link:</label>
+        <input type="password" name="githubLink"/>
+        <label for=cvFile">CV:</label>
+        <input type="file" name="cvFile"/>
+        <label for="profilePicture">Profile Picture:</label>
+        <input type="file" name="profilePicture"/>
+        <button>Sign up</button>
+    </form>
+</body>
+<script>
+    const form = document.querySelector("form");
+
+    const emailSelector = document.querySelector(".email.error");
+    const passwordSelector = document.querySelector(".password.error");
+    const passwordConfSelector = document.querySelector(".passwordConf.error");
+    const firstNameSelector = document.querySelector(".firstName.error");
+    const lastNameSelector = document.querySelector(".lastName.error");
+
+    //reset form
+    emailSelector.textContent = ""
+    passwordSelector.textContent = ""
+    passwordConfSelector.textContent = ""
+    firstNameSelector.textContent= ""
+    lastNameSelector.textContent = ""
+
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        // get values
+        const email = form.email.value;
+        const password = form.password.value;
+        const passwordConf = form.passwordConf.value;
+        const firstName = form.firstName.value;
+        const lastName = form.lastName.value;
+        const githubLink = form.githubLink.value;
+        const cvFile = form.cvFile.files[0];
+        const profilePicture = form.profilePicture.files[0];
+        const listOfValues = [email, password, firstName, lastName, githubLink, cvFile, profilePicture];
+        const listOfKeys = ["email", "password", "firstName", "lastName", "githubLink", "cvFile", "profilePicture"]
+        const formData = new FormData();
+        for (let i = 0; i < listOfValues.length; i++) {
+            formData.append(listOfKeys[i], listOfValues[i])
+        }
+        console.log(formData)
+        try {
+            const result = await fetch("/api/signup", {
+                method: "POST",
+                body: formData,
+            })
+            const data = await result.json();
+            console.log(data);
+            if (data.errors) {
+                emailSelector.textContent = data.errors.email;
+                passwordSelector.textContent = data.errors.password;
+            }
+            if (data.user) {
+                location.assign("/");
+            }
+        }
+
+        catch (err) {
+
+        }
+    })
+</script>
+</html>

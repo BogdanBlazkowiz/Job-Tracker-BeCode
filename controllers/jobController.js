@@ -1,5 +1,5 @@
 const Job = require("../schemas/Job");
-const jwt = require("jsonwebtoken");
+const { grabIdFromToken } = require("../generalFunctions/authStuff");
 
 function handleErrors (err) {
     let errors = { jobTitle: "",
@@ -22,41 +22,32 @@ function handleErrors (err) {
     return errors;
 }
 
-// {
-//     "jobTitle": "Junior Web Dev",
-//     "website": "JuniorWebDev.com",
-//     "employerName": "WebEmployer",
-//     "employerEmail": "webdev@employer.com",
-//     "employerPhone": "+32 400-400-4004",
-//     "employerAdress": "Web dev avenue, 120",
-//     "dateOfCreation": "",
-//     "origin": "Job offer",
-//     "status": "sent CV",
-//     "notes": "None"
-// }
+
 
 module.exports.getJobs = async (req, res) => {
-    jobs = await Job.find();
+    let userId = grabIdFromToken(req, res);
+    let jobs;
+    if (userId) {
+        jobs = await Job.find({userId: userId});
+    }
+    else {
+        res.redirect("/login")
+    }
     res.status(200).json(jobs);
 }
 
 module.exports.getJob = async (req, res) => {
     const id = req.params.id;
+    let userId = grabIdFromToken(req, res);
     job = await Job.findById(id);
+    if (job.userId != userId) {
+        res.status(401).json({error: "Not authorized to see this job."})
+    }
     res.status(200).json(job);
 }
 
 module.exports.postJob = async (req, res) => {
-    const token = req.cookies.jwt;
-    let useId = "";
-    jwt.verify(token, "secretString", (err, decodedToken) => {
-        if (err) {
-            res.redirect("/login");
-        }
-        else {
-            userId = decodedToken.id;
-        }
-    });
+    userId = grabIdFromToken(req, res);
     const {
         jobTitle,
         website,
@@ -92,8 +83,12 @@ module.exports.postJob = async (req, res) => {
 module.exports.updateJob = async (req, res) => {
     let id = req.params.id;
     let update = req.body;
+    let userId = grabIdFromToken(req, res);
     try {
         job = await Job.findById(id);
+        if (job.userId != userId) {
+            res.status(401).json({error: "Not authorized to update this job."})
+        }
         Object.keys(update).forEach((updateEntry) => {
             job[updateEntry] = update[updateEntry];
         })
@@ -110,14 +105,20 @@ module.exports.updateJob = async (req, res) => {
 module.exports.deleteJob = async (req, res) => {
     let id = req.params.id;
     const job = await Job.findById(id);
+    let userId = grabIdFromToken(req, res);
     if (job) {
-        try {
-            await Job.deleteOne({_id: id});
-            console.log(job)
-            res.status(201).json({message: `Job ${id} has been succesfully deleted.`})
+        if (job.userId = userId){
+            try {
+                await Job.deleteOne({_id: id});
+                console.log(job)
+                res.status(201).json({message: `Job ${id} has been succesfully deleted.`})
+            }
+            catch (err) {
+                res.status(400).json(err);
+            }
         }
-        catch (err) {
-            res.status(400).json(err);
+        else {
+            res.status(401).json({error: "Not authorized to delete this job."})
         }
     }
     else {
