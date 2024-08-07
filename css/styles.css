@@ -1,0 +1,340 @@
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  font-family: "Inconsolata";
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+body {
+  padding-left: 120px;
+  padding-right: 120px;
+  background-image: linear-gradient(to bottom, #030024, #201f48, #423870, #695298, #946dc2, #a377d4, #b280e6, #c28af9, #b385f8, #a480f7, #927bf6, #7f77f5);
+}
+
+.body-container {
+  background-color: rgba(231, 229, 233, 0.8235294118);
+  z-index: -2;
+  height: 840px;
+  border-radius: 120px;
+}
+
+header, footer {
+  padding-left: 120px;
+  padding-right: 120px;
+}
+header div.nav-container, footer div.nav-container {
+  background-color: #2f3e68;
+}
+
+header, footer {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+header div, footer div {
+  height: 32px;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+header div img, footer div img {
+  width: 32px;
+  height: 32px;
+}
+header div .site-title, footer div .site-title {
+  margin: auto auto;
+}
+header div ul, footer div ul {
+  display: flex;
+  flex-direction: column;
+  height: 52px;
+  gap: 2px;
+}
+header div ul .auth-link, footer div ul .auth-link {
+  margin-left: auto;
+  text-align: right;
+  height: 30px;
+}
+header div ul .auth-link .anchor-wrapper, footer div ul .auth-link .anchor-wrapper {
+  height: 0px;
+}
+header div ul .auth-container, footer div ul .auth-container {
+  display: flex;
+  gap: 10px;
+}
+
+body {
+  overflow-x: hidden;
+}
+body .home-container {
+  padding-top: 120px;
+  padding-left: 120px;
+  padding-right: 120px;
+  display: grid;
+  grid-template-columns: 120px 240px 480px;
+  grid-template-rows: 120px 240px;
+  gap: 20px;
+}
+body .home-container .welcome-home {
+  font-size: 200%;
+  grid-column: 1/1;
+  grid-row: 1/1;
+}
+body .home-container .home-nav {
+  grid-column: 1/1;
+  grid-row: 2/2;
+  width: 200px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+body .home-container .home-text {
+  grid-column: 3/4;
+  grid-row: 1/2;
+}
+
+.anchor-wrapper {
+  background-color: #24a8d0;
+  border-radius: 10px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.jobs-container {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.jobs-container .anchor-wrapper {
+  width: 100px;
+}
+.jobs-container .buttons-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 100px;
+}
+.jobs-container .buttons-container .sort-container {
+  display: grid;
+  grid-template-columns: 65px 95px 65px 95px;
+  gap: 5px;
+}
+.jobs-container .buttons-container .sort-container .sort-select {
+  grid-column: 2/2;
+  width: 95px;
+}
+.jobs-container .buttons-container .sort-container .select-label {
+  grid-column: 1/1;
+  grid-row: 1/1;
+}
+.jobs-container .buttons-container .sort-container .sort-order-select {
+  grid-column: 4/4;
+  grid-row: 1/1;
+}
+.jobs-container .buttons-container .sort-container .select-order-label {
+  grid-column: 3/3;
+  grid-row: 1/1;
+}
+.jobs-container .buttons-container .sort-container .sort-button {
+  grid-row: 2/2;
+  grid-column: 2/3;
+  border: 1px solid #24a8d0;
+}
+.jobs-container .job-card-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 5px;
+}
+.jobs-container .job-card-container .card-container:hover > .toggled-folder {
+  transform: rotateX(180deg);
+  z-index: 10;
+  opacity: 1;
+  transition: opacity 1s cubic-bezier(0.08, 0.82, 0.19, 1);
+}
+.jobs-container .job-card-container .card-container:hover > .toggled-folder h2 {
+  opacity: 1;
+}
+.jobs-container .job-card-container .flipped-text {
+  transform: rotateZ(180deg) rotateY(180deg);
+}
+.jobs-container .job-card-container .card-container .card-above-thing {
+  background-color: #E98A15;
+  position: relative;
+  top: 15px;
+  height: 30px;
+  width: 150px;
+  border-radius: 20px 20px 20px 0px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+.jobs-container .job-card-container .card-container .job-application-card {
+  border-radius: 15px;
+  width: 300px;
+  height: 120px;
+  background-color: #ffa332;
+  border: 1px solid black;
+  padding-top: 30px;
+  padding-left: 15px;
+  display: grid;
+  grid-template-rows: 40px 40px 40px;
+}
+.jobs-container .job-card-container .card-container .job-application-card .anchor-wrapper {
+  border: 1px solid #24a8d0;
+  grid-column: 2/2;
+}
+.jobs-container .job-card-container .card-container .job-application-card .anchor-wrapper:hover {
+  opacity: 0.7;
+}
+.jobs-container .job-card-container .card-container .job-application-card .show-more {
+  grid-row: 2/2;
+}
+.jobs-container .job-card-container .card-container .job-application-card .delete {
+  grid-row: 3/3;
+}
+.jobs-container .job-card-container .card-container #job-application-card {
+  z-index: 10;
+}
+.jobs-container .job-card-container .card-container .employer-container {
+  position: relative;
+  top: -152px;
+  margin-bottom: -152px;
+  transition: transform 1s, z-index 1s, opacity 1s cubic-bezier(0.84, 0.07, 0.42, 0.9);
+  transform-origin: bottom center;
+  perspective: 1500px;
+  z-index: -1;
+  opacity: 0;
+  display: grid;
+  grid-template-rows: repeat(7, 1fr);
+  gap: 5px;
+}
+.jobs-container .job-card-container .card-container .employer-container h2 {
+  opacity: 0;
+  position: relative;
+  top: -10px;
+  transition: opacity 0.5s;
+}
+
+.create-job-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 120px;
+  gap: 50px;
+}
+.create-job-container form div.anchor-wrapper {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.create-job-container form a.anchor-wrapper {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.create-job-container form .inputs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.create-job-container form .inputs-container .input-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+}
+.create-job-container form .inputs-container .input-container .input-text-container {
+  display: flex;
+  justify-content: space-between;
+  width: 390px;
+  align-items: center;
+}
+.create-job-container form .inputs-container .input-container .input-text-container input {
+  outline: none;
+  height: 25px;
+  border-radius: 10px;
+  border: 1px solid silver;
+  padding-left: 5px;
+}
+.create-job-container form button:hover {
+  opacity: 0.8;
+}
+.create-job-container form button {
+  border: 1px solid #24a8d0;
+}
+
+.modal-curtain {
+  z-index: 100;
+  opacity: 0.9;
+  background-color: black;
+  position: absolute;
+  top: -120px;
+  left: -120px;
+}/*# sourceMappingURL=styles.css.map */

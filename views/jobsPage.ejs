@@ -1,0 +1,114 @@
+<%- include("partials/head.ejs") -%>
+<div class="modal-curtain"></div>
+<div class="jobs-container">
+    <div class="buttons-container">
+        <div class="anchor-wrapper create-job">
+            <a href="/create-job">Add new job</a>
+        </div>
+        <div class="sort-container">
+            <label class="select-label" for="status">Sort by:</label>
+            <select name="status" class="sort-select" required>
+                <option value="dateOfCreation">Created At</option>
+                <option value="Interview">Interview</option>
+                <option value="Negative">Negative</option>
+                <option value="Interested">Interested</option>
+            </select>
+            <label class="select-order-label" for="status" class="sort-order-select">Status:</label>
+            <select name="status" required>
+                <option value="CV Sent">CV Sent</option>
+                <option value="Interview">Interview</option>
+                <option value="Negative">Negative</option>
+                <option value="Interested">Interested</option>
+            </select>
+            <button class="anchor-wrapper sort-button">Sort</button>
+        </div>
+    </div>
+    <ul class="job-card-container">
+        <% for (let i = 0; i < maxPerPage; i++) { %>
+        <div class="card-container hidden">
+            <div class="card-above-thing">
+                <h2 class="position"></h2>
+            </div>
+            <div id="job-application-card" class="job-application-card">
+                <div>
+                    <h3 class="company"></h3>
+                    <h3 class="status-text"></h3>
+                    <h3 class="origin"></h3>
+                    <h3 class="created-at"></h3>
+                    <h3 class="notes"></h3>
+                </div>
+                <button class="anchor-wrapper">Update Job</button>
+                <button class="anchor-wrapper show-more">Show More</button>
+                <button class="anchor-wrapper delete">Delete Job</button>
+            </div>
+            <div class="employer-container hidden job-application-card">
+                <h2 class="employer-phone flipped-text"></h2>
+                <h2 class="employer-address flipped-text"></h2>
+                <h2 class="employer-email flipped-text"></h2>
+                <h2 class="website flipped-text"></h2>
+                <h2 class="employer-name flipped-text"></h2>
+                <h2 class="position flipped-text"></h2>
+            </div>
+        </div>
+        <% } %>
+    </ul>
+</div>
+
+<script>
+        function replaceTextOfClass(text, className, parent) {
+            parent.querySelector(className).innerText = text;
+        }
+        function jobUpdate(evt) {
+            let button = evt.target;
+            location.assign("/update-job/?id="+button.classList[1]);
+        }
+        async function deleteJob(evt) {
+            let card = evt.target.parentElement.parentElement;
+            let id = card.classList[1].substr(2, 100);
+            const result = await fetch("/api/jobs/" + id, {
+                method: "DELETE",
+            });
+            location.assign("/jobs");
+        }
+        async function folderOpen(evt) {
+            let card = evt.target.parentElement.parentElement;
+            let id = card.classList[1].substr(2, 100);
+            const result = await fetch("/api/jobs/" + id, {
+                method: "GET",
+            });
+            const data = await result.json();
+            const folderFlipped = card.querySelector(".employer-container")
+            folderFlipped.classList.remove("hidden")
+            folderFlipped.classList.add("toggled-folder")
+            replaceTextOfClass("Position: " + data.jobTitle, ".position", folderFlipped)
+            replaceTextOfClass("Employer name: " + data.employerName, ".employer-name", folderFlipped)
+            replaceTextOfClass("Website: " + data.website, ".website", folderFlipped)
+            replaceTextOfClass("Contact email: " + data.employerEmail, ".employer-email", folderFlipped)
+            replaceTextOfClass("Address: " + data.employerAddress, ".employer-address", folderFlipped)
+            replaceTextOfClass("Contact number: " + data.employerPhone, ".employer-phone", folderFlipped)
+        }
+        jobContainer = document.querySelector(".job-card-container");
+        window.addEventListener("load", async (e) => {
+            const result = await fetch("/api/jobs", {
+                method: "GET",
+            })
+            const data = await result.json();
+            let jobApplicationsArray = jobContainer.querySelectorAll("#job-application-card");
+            for (let i = 0; i < data.length; i++) {
+                let jobQuery = data[i];
+                jobApplicationsArray[i].parentElement.classList.add(`id${jobQuery._id}`);
+                jobApplicationsArray[i].parentElement.classList.remove(`hidden`);
+                jobApplicationsArray[i].querySelector(".anchor-wrapper").classList.add(jobQuery._id)
+                replaceTextOfClass((jobQuery.jobTitle.length < 11) ? jobQuery.jobTitle: jobQuery.jobTitle.substr(0, 10) + "...", ".position", jobApplicationsArray[i].parentElement)
+                replaceTextOfClass("Company: " + jobQuery.employerName, ".company", jobApplicationsArray[i])
+                replaceTextOfClass("Status: " + jobQuery.status, ".status-text", jobApplicationsArray[i])
+                replaceTextOfClass("Origin: " + jobQuery.origin, ".origin", jobApplicationsArray[i])
+                replaceTextOfClass("Created: " + jobQuery.dateOfCreation.substr(0, 10), ".created-at", jobApplicationsArray[i])
+                replaceTextOfClass("Notes: " + jobQuery.notes, ".notes", jobApplicationsArray[i])
+                jobApplicationsArray[i].querySelector(".anchor-wrapper").addEventListener("click", jobUpdate)
+                jobApplicationsArray[i].querySelector(".show-more").addEventListener("click", folderOpen)
+                jobApplicationsArray[i].querySelector(".delete").addEventListener("click", deleteJob)
+            }
+        })
+    </script>
+<%- include("partials/footer.ejs") -%>

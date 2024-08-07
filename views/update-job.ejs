@@ -1,0 +1,170 @@
+<%- include("partials/head.ejs") -%>
+<div class="create-job-container">
+    <form>
+        <div class="anchor-wrapper">
+            <h2>Update job application</h2>
+        </div>
+        <div class="inputs-container">
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="job-title">Title of the job:</label>
+                    <input type="text" name="job-title" required />
+                </div>
+                <div class="job-title error"></div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="website">Website:</label>
+                    <input type="text" name="website" required />
+                </div>
+                <div class="website error"></div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="employer-name">Employer name:</label>
+                    <input type="text" name="employer-name" required />
+                </div>
+                <div class="employer-name error"></div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="employer-email">Employer's email:</label>
+                    <input type="text" name="employer-email" required />
+                </div>
+                <div class="employer-email error"></div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="employer-phone">Employer's phone number:</label>
+                    <input type="text" name="employer-phone" required />
+                </div>
+                <div class="employer-phone error"></div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="employer-address">Employer's address:</label>
+                    <input type="text" name="employer-address" required />
+                </div>
+                <div class="employer-address error"></div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="origin">Origin:</label>
+                    <select name="origin" required>
+                        <option value="Spontaneous">Spontaneous</option>
+                        <option value="Job Offer">Job Offer</option>                    </select>
+                </div>
+                <div class="origin error"></div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="status">Status:</label>
+                    <select name="status" required>
+                        <option value="CV Sent">CV Sent</option>
+                        <option value="Interview">Interview</option>
+                        <option value="Negative">Negative</option>
+                        <option value="Interested">Interested</option>
+                    </select>
+                </div>
+                <div class="status error"></div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="notes">Notes:</label>
+                    <input type="text" name="notes" />
+                </div>
+            </div>
+        </div>
+        <button class="anchor-wrapper">Update job application</button>
+    </form>
+</div>
+<script>
+        const form = document.querySelector("form");
+        const searchParams = new URLSearchParams(window.location.search);
+    
+    
+        const jobTitleSelector = document.querySelector(".job-title.error");
+        const websiteSelector = document.querySelector(".website.error");
+        const employerNameSelector = document.querySelector(".employer-name.error");
+        const employerEmailSelector = document.querySelector(".employer-email.error");
+        const employerPhoneSelector = document.querySelector(".employer-phone.error");
+        const employerAddressSelector = document.querySelector(".employer-address.error");
+        const originSelector = document.querySelector(".origin.error");
+        const statusSelector = document.querySelector(".status.error");
+        const errorSelectors = [jobTitleSelector, websiteSelector,
+        employerNameSelector, employerEmailSelector, employerPhoneSelector, employerAddressSelector,
+        originSelector, statusSelector]
+        const errorSelectorsNames = ["jobTitle", "website", "employerName", "employerEmail", "employerPhone", "employerAdress", 'origin', "status" ]
+    
+        //reset form
+        errorSelectors.forEach((selector) => {
+            selector.textContent = "";
+        })
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            // get values
+            const jobTitle = form["job-title"].value;
+            const website = form["website"].value;
+            const employerName = form["employer-name"].value;
+            const employerEmail = form["employer-email"].value;
+            const employerPhone = form["employer-phone"].value;
+            const employerAddress = form["employer-address"].value;
+            const origin = form["origin"].value;
+            const status = form["status"].value;
+            const notes = form["notes"].value;
+            const requestBody = { jobTitle, website, employerName, employerEmail, employerAddress, employerPhone, origin, status, notes }
+            try {
+                const result = await fetch("/api/jobs/" + searchParams.get("id"), {
+                    method: "PUT",
+                    body: JSON.stringify(requestBody),
+                    headers: { "Content-Type": "application/json" }
+                })
+                const data = await result.json();
+                console.log(data)
+                if (data.errors) {
+                    for (let i = 0; i < errorSelectors.length; i++) {
+                        errorSelectors[i].textContent = data.errors[errorSelectorsNames[i]];
+                    }
+                }
+                else {
+                    location.assign("/jobs");
+                }
+            }
+    
+            catch (err) {
+    
+            }
+        })
+        window.addEventListener("load", async (evt) => {
+            try {
+                const result = await fetch("/api/jobs/" + searchParams.get("id"), {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" }
+                })
+                const data = await result.json();
+                if (data.errors) {
+                    for (let i = 0; i < errorSelectors.length; i++) {
+                        errorSelectors[i].textContent = data.errors[errorSelectorsNames[i]];
+                    }
+                }
+                if (data) {
+                    form["job-title"].value = data.jobTitle;
+                    form["website"].value = data.website;
+                    form["employer-name"].value = data.employerName;
+                    form["employer-email"].value = data.employerEmail;
+                    form["employer-phone"].value = data.employerPhone;
+                    form["employer-address"].value = data.employerAddress;
+                    form["origin"].value = data.origin;
+                    form["status"].value = data.status;
+                    form["notes"].value = data.notes;
+            
+                }
+            }
+    
+            catch (err) {
+    
+            }
+        })
+    </script>
+<%- include("partials/footer.ejs") -%>

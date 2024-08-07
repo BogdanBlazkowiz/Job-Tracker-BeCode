@@ -1,5 +1,4 @@
 <%- include("partials/head.ejs") -%>
-<body>
     <form>
         <h2>Login</h2>
         <label for="email">Email:</label>
@@ -10,42 +9,40 @@
         <div class="password error"></div>
         <button>Login</button>
     </form>
-</body>
-<script>
-    const form = document.querySelector("form");
 
-    const emailSelector = document.querySelector(".email.error");
-    const passwordSelector = document.querySelector(".password.error");
-
-    //reset form
-    emailSelector.textContent = "";
-    passwordSelector.textContent = "";
-
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        // get values
-        const email = form.email.value;
-        const password = form.password.value;
-        try {
-            const result = await fetch("/api/login", {
-                method: "POST",
-                body: JSON.stringify({ email, password }),
-                headers: { "Content-Type": "application/json" }
-            })
-            const data = await result.json();
-            console.log(data);
-            if (data.errors) {
-                emailSelector.textContent = data.errors.email;
-                passwordSelector.textContent = data.errors.password;
+    <script>
+        const form = document.querySelector("form");
+    
+        const emailSelector = document.querySelector(".email.error");
+        const passwordSelector = document.querySelector(".password.error");
+    
+        //reset form
+        emailSelector.textContent = "";
+        passwordSelector.textContent = "";
+    
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            // get values
+            const email = form.email.value;
+            const password = form.password.value;
+            try {
+                const result = await fetch("/api/login", {
+                    method: "POST",
+                    body: JSON.stringify({ email, password }),
+                    headers: { "Content-Type": "application/json" }
+                })
+                const data = await result.json();
+                console.log(data);
+                if (data.errors) {
+                    emailSelector.textContent = data.errors.email;
+                    passwordSelector.textContent = data.errors.password;
+                }
+                if (data.user) {
+                    location.assign("/");
+                }
             }
-            if (data.user) {
-                location.assign("/");
+            catch (err) {
             }
-        }
-
-        catch (err) {
-
-        }
-    })
-</script>
-</html>
+        })
+    </script>
+<%- include("partials/footer.ejs") -%>

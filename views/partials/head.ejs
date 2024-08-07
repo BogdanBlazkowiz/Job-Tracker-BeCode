@@ -1,7 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css" type="text/css">
     <title>Job Tracker</title>
-</head>
+  </head>
+  <body>
+    <header>
+      <div class="nav-container">
+        <img src="logo.png" alt="">
+        <h1 class="site-title"><a href="/">Job Tracker</a></h1>
+        <nav>
+          <ul>
+            <% if (lastName) { %>
+            <li>Welcome <%= lastName + " " + firstName %>!</li>
+            <li class="auth-link"><div class="anchor-wrapper"><a href="/api/logout">Log out</a></div></li>
+            <% } else { %>
+            <div class="auth-container">
+              <li class="auth-link"><div class="anchor-wrapper"><a href="/login">Log in</a></div></li>
+              <li class="auth-link"><div class="anchor-wrapper"><a href="/signup" class="btn">Sign up</a></div></li>
+            </div>
+            <% } %>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="body-container">

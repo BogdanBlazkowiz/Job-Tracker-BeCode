@@ -1,7 +1,20 @@
 <%- include("partials/head.ejs") -%>
-<body>
-    <h1>Welcome!</h1>
+    <div class="home-container">
+        <h1 class="welcome-home">Welcome!</h1>
+        <div class="home-nav">
+            <div class="anchor-wrapper"><a href="/profile">My Profile</a></div>
+            <div class="anchor-wrapper"><a href="/jobs">My Job Applications</a></div>
+        </div>
+        <div class="home-text">
+            <p class="home-explanation-text">
+                Hello! Welcome to my rendition of a simple job application tracking project,
+                as part of my training at BeCode. The site includes simple auth, file hosting
+                for CVs as well as profile pictures, and a CRUD api to serve the stored job application
+                info.
+            </p>
+        </div>
+    </div>
+    <!-- <a href="/create-job">Add a new job</a>
     <a href="/login">Login</a>
-    <a href="/signup">Signup</a>
-</body>
-</html>
+    <a href="/signup">Signup</a> -->
+<%- include("partials/footer.ejs") -%>

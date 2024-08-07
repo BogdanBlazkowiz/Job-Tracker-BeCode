@@ -13,7 +13,8 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({  extended: false }));
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/css", {}));
+app.use(express.static(__dirname + "/images", {}));
 app.use(cookieParser());
 app.use(methodOverride("_method"));
 app.set('view engine', 'ejs');

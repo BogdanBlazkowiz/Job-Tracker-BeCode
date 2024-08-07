@@ -15,6 +15,8 @@ apiRouter.get(baseUrl+"jobs/:id", jobController.getJob);
 
 apiRouter.post(baseUrl + "signup", uploadFields, authController.signupPost);
 apiRouter.post(baseUrl + "login", authController.loginPost);
+apiRouter.get(baseUrl + "logout", authController.logoutGet);
+apiRouter.get(baseUrl + "user", authController.getUser);
 apiRouter.post(baseUrl + "upload-file", uploadFields, storageController.uploadFiles)
 apiRouter.put(baseUrl + "change-files-account", uploadFields, authController.replaceCloudinaryFile);
 module.exports = apiRouter;

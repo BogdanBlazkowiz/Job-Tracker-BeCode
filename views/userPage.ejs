@@ -1,0 +1,40 @@
+<%- include("partials/head.ejs") -%>
+    <div class="user-container">
+        <h1 class="email"></h1>
+        <h1 class="github-link"></h1>
+        <h1 class="name"></h1>
+        <button class="download-button">Show CV</button>
+        <button class="delete-button">Delete User</button>
+        <img src="" alt="Profile Picture" class="profile-picture">
+    </div>
+
+<script>
+    function download(evt) {
+        const a = document.createElement('a')
+        button = evt.target;
+        a.href = button.href;
+        a.download = "CVfile";
+        a.target = "_blank";
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a);
+    }
+    function replaceTextOfClass(text, className, parent) {
+        parent.querySelector(className).innerText = text;
+    }
+    window.addEventListener("load", async (e) => {
+        const result = await fetch("/api/user", {
+            method: "GET",
+        })
+        const data = await result.json();
+        console.log(data)
+        userContainer = document.querySelector(".user-container");
+        replaceTextOfClass(data.email, ".email", userContainer);
+        replaceTextOfClass(data.githubLink, ".github-link", userContainer);
+        replaceTextOfClass(data.lastName + " " + data.firstName, ".name", userContainer);
+        userContainer.querySelector(".profile-picture").src = data.profilePictureLink;
+        userContainer.querySelector(".download-button").href = data.cvLink;
+        userContainer.querySelector(".download-button").addEventListener("click", download);
+    })
+</script>
+<%- include("partials/footer.ejs") -%>

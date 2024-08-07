@@ -6,7 +6,7 @@ const {
     deleteCloudinaryFile,
 } = require("../controllers/storageController");
 const { grabIdFromToken } = require("../generalFunctions/authStuff");
-
+const bcrypt = require("bcrypt");
 // 3 days
 const maxAge = 3 * 86400 * 1000;
 
@@ -56,7 +56,10 @@ module.exports.logoutGet = (req, res) => {
 };
 
 module.exports.signupPost = async (req, res) => {
-    const { email, password, firstName, lastName, githubLink } = req.body;
+    const { email, firstName, lastName, githubLink } = req.body;
+    const salt = await bcrypt.genSalt();
+    let password = req.body.password;
+    password = await bcrypt.hash(password, salt);
     const cvFile = req.files["cvFile"] ? req.files["cvFile"][0] : null;
     const profilePicture = req.files["profilePicture"]
         ? req.files["profilePicture"][0]
@@ -71,7 +74,6 @@ module.exports.signupPost = async (req, res) => {
         profilePictureLink = await profilePictureFileUpload(
             profilePicture.buffer
         );
-        console.log(profilePictureLink);
         profilePictureLink = profilePictureLink.secure_url;
     }
     try {
@@ -96,7 +98,6 @@ module.exports.signupPost = async (req, res) => {
 
 module.exports.loginPost = async (req, res) => {
     const { email, password } = req.body;
-    console.log(req.body, "tes");
     try {
         const user = await User.login(email, password);
         const token = createToken(user._id);
@@ -110,11 +111,10 @@ module.exports.loginPost = async (req, res) => {
 
 module.exports.deleteUser = async (req, res) => {
     userId = grabIdFromToken(req, res);
-    user = User.findById(userId);
+    user = await User.findById(userId);
     if (user) {
         try {
             await User.deleteOne({ _id: userId });
-            console.log(user);
             res.status(201).json({
                 message: `User ${id} has been succesfully deleted.`,
             });
@@ -126,30 +126,40 @@ module.exports.deleteUser = async (req, res) => {
     }
 };
 
-module.exports.replaceCloudinaryFile = async (req, res) => {
+module.exports.getUser = async (req, res) => {
     userId = grabIdFromToken(req, res);
     user = await User.findById(userId);
+    if (user) {
+        const cleanedUpUser = {email: user.email, firstName: user.firstName, lastName: user.lastName, githubLink: user.githubLink, cvLink: user.cvLink, profilePictureLink: user.profilePictureLink}
+        res.status(201).json(cleanedUpUser);
+    } else {
+        res.status(400).json({ error: "No user was found with that id." });
+    }
+};
+
+module.exports.replaceCloudinaryFile = async (req, res) => {
+    userId = grabIdFromToken(req, res);
+    var user = await User.findById(userId);
     const cvFile = req.files["cvFile"] ? req.files["cvFile"][0] : null;
     const profilePicture = req.files["profilePicture"]
         ? req.files["profilePicture"][0]
         : null;
     let cvLink = "";
     let profilePictureLink = "";
-    [cvFile ? "cvFile" : "", profilePicture ? "profilePicture" : ""].forEach(
+    [cvFile ? "cvLink" : "", profilePicture ? "profilePictureLink" : ""].forEach(
         async (elem) => {
-            let targetFile = elem;
-            let fileLink = await user.get(targetFile, "string");
-            console.log(fileLink);
-            // this substring starts after the superfleous part of the previous link url,
-            // and removes with the split the extension, giving the public id,
-            // which is the input for the deleteCloudinaryFile function
-            let destroyTarget = fileLink.substr(62, 200).split(".")[0];
-            console.log(destroyTarget);
-            let resultOfDeletion;
-            if (destroyTarget) {
-                resultOfDeletion = await deleteCloudinaryFile(destroyTarget);
+            if (elem) {
+                let targetFile = elem;
+                let fileLink = await user.get(targetFile, "string");
+                // this substring starts after the superfleous part of the previous link url,
+                // and removes with the split the extension, giving the public id,
+                // which is the input for the deleteCloudinaryFile function
+                let destroyTarget = fileLink.substr(62, 200).split(".")[0];
+                let resultOfDeletion;
+                if (destroyTarget) {
+                    resultOfDeletion = await deleteCloudinaryFile(destroyTarget);
+                }
             }
-            console.log(resultOfDeletion);
         }
     );
     if (cvFile) {
@@ -163,5 +173,5 @@ module.exports.replaceCloudinaryFile = async (req, res) => {
         user.profilePictureLink = profilePictureLink.secure_url;
     }
     user.save();
-    res.status(200).json({ status: `Succesfully updated the ${targetFile}` });
+    res.status(200).json({ status: `Succesfully updated the files` });
 };

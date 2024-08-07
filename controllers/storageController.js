@@ -9,10 +9,10 @@ cloudinary.config({
 
 // magic stuff, not entirely sure how it works, but it does, takes a buffer,
 // a ressource_type and a destination folder and pipes the buffer into the cloudinary upload stream.
-async function uploadStream(buffer, folder) {
+async function uploadStream(buffer, resourceType, folder) {
     return new Promise((res, rej) => {
     const theTransformStream = cloudinary.uploader.upload_stream(
-        {folder},
+        {resourceType, folder},
         (err, result) => {
         if (err) return rej(err);
         res(result);
@@ -26,7 +26,7 @@ async function uploadStream(buffer, folder) {
 cvFileUpload = async (buffer) => {
     let uploadedFile;
     try {
-        uploadedFile = await uploadStream(buffer, "CV")
+        uploadedFile = await uploadStream(buffer, "raw", "CV")
     }
     catch (err) {
         console.log(err);
@@ -35,7 +35,7 @@ cvFileUpload = async (buffer) => {
 }
 
 profilePictureFileUpload = async (buffer) => {
-    const uploadedFile = await uploadStream(buffer, "ProfilePicture")
+    const uploadedFile = await uploadStream(buffer, "image", "ProfilePicture")
     return uploadedFile
 }
 
@@ -57,6 +57,7 @@ uploadFiles = async (req, res) => {
     if (cvFile) {
         upload1 = await cvFileUpload(cvFile.buffer);
     }
+    console.log(upload1)
     res.status(200).json({upload1, upload2});
 }
 

@@ -9,8 +9,7 @@ function handleErrors (err) {
         employerPhone: "",
         employerAdress: "",
         origin: "",
-        status: "",
-        notes: ""
+        status: ""
     };
 
     // validation errors
@@ -26,9 +25,13 @@ function handleErrors (err) {
 
 module.exports.getJobs = async (req, res) => {
     let userId = grabIdFromToken(req, res);
+    let pageNumber;
+    let maxPerPage;
+    (req.body.pageNumber) ? pageNumber = req.body.pageNumber : pageNumber = 0;
+    (req.body.maxPerPage) ? maxPerPage = req.body.maxPerPage : maxPerPage = 12;
     let jobs;
     if (userId) {
-        jobs = await Job.find({userId: userId});
+        jobs = await Job.find({userId: userId}).skip(pageNumber * maxPerPage).limit(maxPerPage);
     }
     else {
         res.redirect("/login")
@@ -38,6 +41,7 @@ module.exports.getJobs = async (req, res) => {
 
 module.exports.getJob = async (req, res) => {
     const id = req.params.id;
+    console.log(id, "idddddd")
     let userId = grabIdFromToken(req, res);
     job = await Job.findById(id);
     if (job.userId != userId) {
@@ -59,6 +63,8 @@ module.exports.postJob = async (req, res) => {
         status,
         notes
     } = req.body;
+    console.log(req.body);
+    
     try {
         const jobApplication = await Job.create({
             jobTitle,
@@ -72,11 +78,11 @@ module.exports.postJob = async (req, res) => {
             notes,
             userId
         })
-        res.status(201).json(jobApplication);
+        res.status(200).json({jobApplication})
     }
     catch (err) {
         const errors = handleErrors(err)
-        res.status(400).json(errors);
+        res.status(400).json({errors});
     }
 }
 
