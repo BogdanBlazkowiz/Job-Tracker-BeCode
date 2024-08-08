@@ -5,7 +5,7 @@ const methodOverride = require("method-override");
 const apiRouter = require("./routes/apiRouter");
 const frontRouter = require("./routes/frontRouter");
 const port = process.env.PORT || 3000;
-const dbURI = "mongodb://127.0.0.1:27017/jobTracker";
+const dbURI = process.env.DB_URI;
 const cookieParser = require("cookie-parser");
 const { checkUser } = require("./middlewares/authMiddleware");
 
