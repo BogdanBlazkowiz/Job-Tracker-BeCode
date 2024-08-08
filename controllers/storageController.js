@@ -35,8 +35,9 @@ cvFileUpload = async (buffer) => {
 }
 
 profilePictureFileUpload = async (buffer) => {
+    let uploadedFile
     try {
-        const uploadedFile = await uploadStream(buffer, "image", "ProfilePicture")
+        uploadedFile = await uploadStream(buffer, "image", "ProfilePicture")
     }
     catch (err) {
         console.log(err)
