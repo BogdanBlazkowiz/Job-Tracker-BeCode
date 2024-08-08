@@ -54,7 +54,7 @@ const jobSchema = new mongoose.Schema({
     },
     dateOfCreation: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     }
 })
 

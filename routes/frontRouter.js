@@ -3,6 +3,7 @@ const { requireAuth } = require("../middlewares/authMiddleware");
 
 const frontRouter = Router();
 const basePath = "../views/";
+
 frontRouter.get("/", requireAuth, (req, res) => {
     res.render(basePath + "home.ejs")
 })
@@ -24,5 +25,12 @@ frontRouter.get("/create-job", (req, res) => {
 frontRouter.get("/update-job", (req, res) => {
     res.render(basePath + "update-job.ejs", { maxPerPage: 20})
 });
+frontRouter.get("/jobs/:a:b:c:d:e:f:g:h:i:j", (req, res) => {
+    let result = ""
+    Object.values(req.params).forEach((elem) => {
+        result += elem + "/"
+    })
+    res.send(result)
+})
 
 module.exports = frontRouter;

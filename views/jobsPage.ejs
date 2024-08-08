@@ -5,20 +5,26 @@
         <div class="anchor-wrapper create-job">
             <a href="/create-job">Add new job</a>
         </div>
+        <div class="anchor-wrapper create-dummy-job">
+            <span href="/jobs" class="create-dummy-job">Add dummy job</span>
+        </div>
+        <div class="pagination-container">
+            <span class="anchor-wrapper pagination-button minus">-</span><span class="current-page" value="">1</span>/<span class="max-page"></span><span class="anchor-wrapper pagination-button plus">+</span>
+        </div>
         <div class="sort-container">
-            <label class="select-label" for="status">Sort by:</label>
-            <select name="status" class="sort-select" required>
+            <label class="select-label" for="sort-type">Sort by:</label>
+            <select name="sort-type" id="sort-type" class="sort-select" required>
                 <option value="dateOfCreation">Created At</option>
-                <option value="Interview">Interview</option>
-                <option value="Negative">Negative</option>
-                <option value="Interested">Interested</option>
+                <option value="employerName">Company</option>
+                <option value="jobTitle">Position</option>
+                <option value="status">Status</option>
+                <option value="origin">Origin</option>
             </select>
-            <label class="select-order-label" for="status" class="sort-order-select">Status:</label>
-            <select name="status" required>
-                <option value="CV Sent">CV Sent</option>
-                <option value="Interview">Interview</option>
-                <option value="Negative">Negative</option>
-                <option value="Interested">Interested</option>
+            <label class="select-order-label" for="order-select"
+                class="sort-order-select">Order:</label>
+            <select name="order-select" id="sort-order" required>
+                <option value="1">Asc</option>
+                <option value="-1">Desc</option>
             </select>
             <button class="anchor-wrapper sort-button">Sort</button>
         </div>
@@ -35,7 +41,7 @@
                     <h3 class="status-text"></h3>
                     <h3 class="origin"></h3>
                     <h3 class="created-at"></h3>
-                    <h3 class="notes"></h3>
+                    <p class="notes"></p>
                 </div>
                 <button class="anchor-wrapper">Update Job</button>
                 <button class="anchor-wrapper show-more">Show More</button>
@@ -57,6 +63,47 @@
 <script>
         function replaceTextOfClass(text, className, parent) {
             parent.querySelector(className).innerText = text;
+        }
+        function randomChoice(arr) {
+            return arr[Math.floor(arr.length * Math.random())];
+        }
+        async function dummyJobCreate(evt) {
+            evt.preventDefault()
+            const titleArray = ["Junior Dev", "Senior Dev", "Intern", "Janitor"]
+            const websiteArray = ["apple.com", "facebook.com", 'amazon.com', "twitch.tv"]
+            const employerNameArray = ["apple", "facebook", "amazon", "twitch"]
+            const employerEmailArray = ["apple@apple.com", "facebook@face.book", "amazon@shipping.be", "twitch@twitch.tv"]
+            const employerAddressArray = ["over here", "over there", "not there", "yes there"]
+            const employerPhoneArray = ["+32 400-010-0100", "+34 555-010-0100", "+36 401-020-0300"]
+            const originArray = ["Spontaneous", "Job Offer"]
+            const statusArray = ["CV Sent", "Interview", "Negative", "Interested"]
+            const notesArray= ["testing the stuff out", "yay  i'm testing"]
+            const requestBody = {
+                jobTitle: randomChoice(titleArray),
+                website: randomChoice(websiteArray),
+                employerName: randomChoice(employerNameArray),
+                employerEmail: randomChoice(employerEmailArray),
+                employerAddress: randomChoice(employerAddressArray),
+                employerPhone: randomChoice(employerPhoneArray),
+                origin: randomChoice(originArray),
+                status: randomChoice(statusArray),
+                notes: randomChoice(notesArray)
+            }
+            try {
+                const result = await fetch("/api/jobs", {
+                    method: "POST",
+                    body: JSON.stringify(requestBody),
+                    headers: { "Content-Type": "application/json" }
+                })
+                const data = await result.json();
+                if (data.errors) {
+                }
+                if (data.jobApplication) {
+                    location.assign("/jobs");
+                }
+            }
+            catch (err) {
+            }
         }
         function jobUpdate(evt) {
             let button = evt.target;
@@ -87,12 +134,32 @@
             replaceTextOfClass("Address: " + data.employerAddress, ".employer-address", folderFlipped)
             replaceTextOfClass("Contact number: " + data.employerPhone, ".employer-phone", folderFlipped)
         }
-        jobContainer = document.querySelector(".job-card-container");
-        window.addEventListener("load", async (e) => {
-            const result = await fetch("/api/jobs", {
-                method: "GET",
+        async function loadJobs(evt) {
+            currentPage = document.querySelector(".current-page");
+            maxPage = document.querySelector(".max-page")
+            document.querySelectorAll("#job-application-card").forEach((element) => {
+                element.parentElement.classList.add("hidden");
             })
-            const data = await result.json();
+            if (!evt.target.location && evt.target.classList[2] === "minus") {
+                value = parseInt(currentPage.innerText)
+                value = (value > 1) ? value - 1: value
+                currentPage.innerText = value
+            }
+            else if (!evt.target.location && evt.target.classList[2] === "plus") {
+                value = parseInt(currentPage.innerText);
+                value = (value < maxPage.innerText) ? value + 1: value
+                currentPage.innerText = value
+            }
+            const sortType = document.querySelector("#sort-type").value;
+            const sortOrder = document.querySelector("#sort-order").value;
+            const pageNumber = currentPage.innerText;
+            const result = await fetch(`/api/jobs?sortType=${sortType}&sortOrder=${sortOrder}&pageNumber=${pageNumber}`, {
+                method: "GET"
+            })
+            const jobsWithMetadata = await result.json();
+            const data = jobsWithMetadata.data;
+            currentPage.innerText = parseInt(jobsWithMetadata.metaData[0].pageNumber)
+            maxPage.innerText = jobsWithMetadata.metaData[0].totalPages
             let jobApplicationsArray = jobContainer.querySelectorAll("#job-application-card");
             for (let i = 0; i < data.length; i++) {
                 let jobQuery = data[i];
@@ -104,11 +171,18 @@
                 replaceTextOfClass("Status: " + jobQuery.status, ".status-text", jobApplicationsArray[i])
                 replaceTextOfClass("Origin: " + jobQuery.origin, ".origin", jobApplicationsArray[i])
                 replaceTextOfClass("Created: " + jobQuery.dateOfCreation.substr(0, 10), ".created-at", jobApplicationsArray[i])
-                replaceTextOfClass("Notes: " + jobQuery.notes, ".notes", jobApplicationsArray[i])
+                replaceTextOfClass("Notes: " +  jobQuery.notes.substr(0, 14) + "" + jobQuery.notes.substr(14, 21) + "" + jobQuery.notes.substr(21, 21), ".notes", jobApplicationsArray[i])
                 jobApplicationsArray[i].querySelector(".anchor-wrapper").addEventListener("click", jobUpdate)
                 jobApplicationsArray[i].querySelector(".show-more").addEventListener("click", folderOpen)
                 jobApplicationsArray[i].querySelector(".delete").addEventListener("click", deleteJob)
             }
+        }
+        document.querySelector(".create-dummy-job").addEventListener("click", dummyJobCreate)
+        jobContainer = document.querySelector(".job-card-container");
+        window.addEventListener("load", loadJobs)
+        document.querySelector(".sort-button").addEventListener("click", loadJobs)
+        document.querySelectorAll(".pagination-button").forEach((btn) => {
+            btn.addEventListener("click", loadJobs)
         })
     </script>
 <%- include("partials/footer.ejs") -%>

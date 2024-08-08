@@ -1,5 +1,5 @@
 <%- include("partials/head.ejs") -%>
-<div class="create-job-container">
+<div class="create-job-container form-container">
     <form>
         <div class="anchor-wrapper">
             <h2>Create new job application</h2>
@@ -52,7 +52,8 @@
                     <label for="origin">Origin:</label>
                     <select name="origin" required>
                         <option value="Spontaneous">Spontaneous</option>
-                        <option value="Job Offer">Job Offer</option>                    </select>
+                        <option value="Job Offer">Job Offer</option>
+                    </select>
                 </div>
                 <div class="origin error"></div>
             </div>
@@ -121,7 +122,6 @@
                     headers: { "Content-Type": "application/json" }
                 })
                 const data = await result.json();
-                console.log(data)
                 if (data.errors) {
                     for (let i = 0; i < errorSelectors.length; i++) {
                         errorSelectors[i].textContent = data.errors[errorSelectorsNames[i]];

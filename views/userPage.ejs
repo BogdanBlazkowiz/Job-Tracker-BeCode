@@ -1,15 +1,80 @@
 <%- include("partials/head.ejs") -%>
-    <div class="user-container">
-        <h1 class="email"></h1>
-        <h1 class="github-link"></h1>
-        <h1 class="name"></h1>
-        <button class="download-button">Show CV</button>
-        <button class="delete-button">Delete User</button>
-        <img src="" alt="Profile Picture" class="profile-picture">
+<div class="user-container">
+    <div class="user-general-info-container">
+        <img src alt="Profile Picture" class="profile-picture">
+        <div class="user-info-container">
+            <h1 class="email"></h1>
+            <h1 class="github-link"></h1>
+            <h1 class="name"></h1>
+        </div>
+        <div class="user-button-container">
+            <button class="download-button anchor-wrapper">Show CV</button>
+            <button class="delete-button anchor-wrapper">Delete User</button>
+        </div>
     </div>
+    <div class="user-forms-container">
+        <div class="form-container">
+            <form class="password-change-form">
+                <div class="form-buttons">
+                    <h2 class="anchor-wrapper">Change password</h2>
+                    <button class="anchor-wrapper">Submit</button>
+                </div>
+                <div class="inputs-container">
+                    <div class="input-container">
+                        <div class="input-text-container">
+                            <label for="password">Current password:</label>
+                            <input type="password" name="password" required />
+                        </div>
+                        <div class="password error"></div>
+                    </div>
+                    <div class="input-container">
+                        <div class="input-text-container">
+                            <label for="new-password">New password:</label>
+                            <input type="password" name="new-password" required />
+                        </div>
+                        <div class="new-password error"></div>
+                    </div>
+                    <div class="input-container">
+                        <div class="input-text-container">
+                            <label for="password-confirmation">New password
+                                confirmation:</label>
+                            <input type="password" name="password-confirmation"
+                                required />
+                        </div>
+                        <div class="password-confirmation error"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="form-container">
+            <form class="pfp-cv-change-form">
+                <div class="form-buttons">
+                    <h2 class="anchor-wrapper">Change pfp/cv</h2>
+                    <button class="anchor-wrapper">Submit</button>
+                </div>
+                <div class="inputs-container">
+                    <div class="input-container">
+                        <div class="input-text-container">
+                            <label for=cvFile">CV:</label>
+                            <input type="file" name="cvFile" />
+                        </div>
+                        <div class="cvFile error"></div>
+                    </div>
+                    <div class="input-container">
+                        <div class="input-text-container">
+                            <label for="profilePicture">Profile Picture:</label>
+                            <input type="file" name="profilePicture" />
+                        </div>
+                        <div class="profilePicture error"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script>
-    function download(evt) {
+    function showCv(evt) {
         const a = document.createElement('a')
         button = evt.target;
         a.href = button.href;
@@ -22,19 +87,89 @@
     function replaceTextOfClass(text, className, parent) {
         parent.querySelector(className).innerText = text;
     }
+    async function changePasswordHandler(e) {
+            e.preventDefault();
+            const form = e.target
+            const email = document.querySelector(".email").innerText.substr(7, 1000);
+            const oldPasswordSelector = form.querySelector(".password.error");
+            const newPasswordSelector = form.querySelector(".new-password.error")
+            const newPasswordConfirmationSelector = form.querySelector(".password-confirmation.error");
+            const oldPassword = form["password"].value;
+            const newPasswordConfirmation = form["password-confirmation"].value;
+            const newPassword = form["new-password"].value;
+            let errorFlag = false;
+            if (newPassword != newPasswordConfirmation) {
+                newPasswordConfirmationSelector.innerText = "Password confirmation needs to be identitcal to password."
+                errorFlag = true;
+            }
+            const requestBody = {newPassword, oldPassword, email}
+            try {
+                if (errorFlag) {
+                    throw new Error("Password and confirmation unidentical.")
+                }
+                const result = await fetch("/api/change-password", {
+                    method: "PUT",
+                    body: JSON.stringify(requestBody),
+                    headers: { "Content-Type": "application/json" }
+                })
+                const data = await result.json();
+                if (data.errors) {
+                    oldPasswordSelector.textContent = data.errors.oldpw;
+                    newPasswordSelector.textContent = data.errors.newp;
+                }
+                if (data.success) {
+                    location.assign("/profile");
+                }
+            }
+            catch (err) {
+            }
+        }
+    async function fileFormHandler(e) {
+            e.preventDefault();
+            const form = e.target
+            const cvSelector = form.querySelector(".cvFile.error");
+            const profilePictureSelector = form.querySelector(".profilePicture.error")
+            const cvFile = form.cvFile.files[0];
+            const profilePicture = form.profilePicture.files[0];
+            const listOfValues = [cvFile, profilePicture];
+            const listOfKeys = ["cvFile", "profilePicture"]
+            const formData = new FormData();
+            for (let i = 0; i < listOfValues.length; i++) {
+                formData.append(listOfKeys[i], listOfValues[i])
+            }
+            try {
+                const result = await fetch("/api/change-files-account", {
+                    method: "PUT",
+                    body: formData,
+                })
+                const data = await result.json();
+                if (data.errors) {
+                    cvSelector.textContent = data.errors.cv;
+                    profilePictureSelector.textContent = data.errors.pfp;
+                }
+                if (data.success) {
+                    location.assign("/profile");
+                }
+            }
+            catch (err) {
+            }
+        }
     window.addEventListener("load", async (e) => {
         const result = await fetch("/api/user", {
             method: "GET",
         })
         const data = await result.json();
-        console.log(data)
         userContainer = document.querySelector(".user-container");
-        replaceTextOfClass(data.email, ".email", userContainer);
-        replaceTextOfClass(data.githubLink, ".github-link", userContainer);
-        replaceTextOfClass(data.lastName + " " + data.firstName, ".name", userContainer);
+        replaceTextOfClass("Email: " + data.email, ".email", userContainer);
+        replaceTextOfClass("Github: " + data.githubLink, ".github-link", userContainer);
+        replaceTextOfClass("Name: " + data.lastName + " " + data.firstName, ".name", userContainer);
         userContainer.querySelector(".profile-picture").src = data.profilePictureLink;
         userContainer.querySelector(".download-button").href = data.cvLink;
-        userContainer.querySelector(".download-button").addEventListener("click", download);
+        userContainer.querySelector(".download-button").addEventListener("click", showCv);
     })
+    const fileChangeForm = document.querySelector(".pfp-cv-change-form")
+    const passwordChangeForm = document.querySelector(".password-change-form")
+    fileChangeForm.addEventListener("submit", fileFormHandler)
+    passwordChangeForm.addEventListener("submit", changePasswordHandler)
 </script>
 <%- include("partials/footer.ejs") -%>

@@ -1,5 +1,5 @@
 <%- include("partials/head.ejs") -%>
-<div class="create-job-container">
+<div class="create-job-container form-container">
     <form>
         <div class="anchor-wrapper">
             <h2>Update job application</h2>
@@ -81,8 +81,7 @@
 <script>
         const form = document.querySelector("form");
         const searchParams = new URLSearchParams(window.location.search);
-    
-    
+
         const jobTitleSelector = document.querySelector(".job-title.error");
         const websiteSelector = document.querySelector(".website.error");
         const employerNameSelector = document.querySelector(".employer-name.error");
@@ -95,7 +94,7 @@
         employerNameSelector, employerEmailSelector, employerPhoneSelector, employerAddressSelector,
         originSelector, statusSelector]
         const errorSelectorsNames = ["jobTitle", "website", "employerName", "employerEmail", "employerPhone", "employerAdress", 'origin', "status" ]
-    
+
         //reset form
         errorSelectors.forEach((selector) => {
             selector.textContent = "";
@@ -121,7 +120,6 @@
                     headers: { "Content-Type": "application/json" }
                 })
                 const data = await result.json();
-                console.log(data)
                 if (data.errors) {
                     for (let i = 0; i < errorSelectors.length; i++) {
                         errorSelectors[i].textContent = data.errors[errorSelectorsNames[i]];
@@ -131,9 +129,9 @@
                     location.assign("/jobs");
                 }
             }
-    
+
             catch (err) {
-    
+
             }
         })
         window.addEventListener("load", async (evt) => {

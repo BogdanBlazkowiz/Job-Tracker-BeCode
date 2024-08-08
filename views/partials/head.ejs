@@ -14,7 +14,7 @@
         <nav>
           <ul>
             <% if (lastName) { %>
-            <li>Welcome <%= lastName + " " + firstName %>!</li>
+            <a href="/profile">Welcome <%= lastName + " " + firstName %>!</a>
             <li class="auth-link"><div class="anchor-wrapper"><a href="/api/logout">Log out</a></div></li>
             <% } else { %>
             <div class="auth-container">

@@ -1,30 +1,65 @@
 <%- include("partials/head.ejs") -%>
+<div class="form-container">
     <form>
-        <h2>Sign up</h2>
-        <label for="email">Email:</label>
-        <input type="text" name="email" required/>
-        <div class="email error"></div>
-        <label for="firstName">Firstname:</label>
-        <input type="text" name="firstName" required/>
-        <div class="firstName error"></div>
-        <label for="lastName">Lastname:</label>
-        <input type="text" name="lastName" required/>
-        <div class="lastName error"></div>
-        <label for="password">Password:</label>
-        <input type="password" name="password" required/>
-        <div class="password error"></div>
-        <label for="passwordConf">Password confirmation:</label>
-        <input type="password" name="passwordConf" required/>
-        <div class="passwordConf error"></div>
-        <label for="githubLink">Github Link:</label>
-        <input type="text" name="githubLink"/>
-        <label for=cvFile">CV:</label>
-        <input type="file" name="cvFile"/>
-        <label for="profilePicture">Profile Picture:</label>
-        <input type="file" name="profilePicture"/>
-        <button>Sign up</button>
+        <h2 class="anchor-wrapper">Sign up</h2>
+        <div class="inputs-container">
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="email">Email:</label>
+                    <input type="text" name="email" required/>
+                </div>
+                <div class="email error"></div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="firstName">Firstname:</label>
+                    <input type="text" name="firstName" required/>
+                </div>
+                <div class="firstName error"></div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="lastName">Lastname:</label>
+                    <input type="text" name="lastName" required/>
+                </div>
+                <div class="lastName error"></div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" required/>
+                </div>
+                <div class="password error"></div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="passwordConf">Password confirmation:</label>
+                    <input type="password" name="passwordConf" required/>
+                </div>
+                <div class="passwordConf error"></div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="githubLink">Github Link:</label>
+                    <input type="text" name="githubLink"/>
+                </div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for=cvFile">CV:</label>
+                    <input type="file" name="cvFile"/>
+                </div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="profilePicture">Profile Picture:</label>
+                    <input type="file" name="profilePicture"/>
+                </div>
+            </div>
+        </div>
+        <button class="anchor-wrapper">Sign up</button>
     </form>
-
+</div>
     <script>
         const form = document.querySelector("form");
     
@@ -59,14 +94,12 @@
             for (let i = 0; i < listOfValues.length; i++) {
                 formData.append(listOfKeys[i], listOfValues[i])
             }
-            console.log(formData)
             try {
                 const result = await fetch("/api/signup", {
                     method: "POST",
                     body: formData,
                 })
                 const data = await result.json();
-                console.log(data);
                 if (data.errors) {
                     emailSelector.textContent = data.errors.email;
                     passwordSelector.textContent = data.errors.password;

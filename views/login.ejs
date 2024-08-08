@@ -1,16 +1,27 @@
 <%- include("partials/head.ejs") -%>
+<div class="form-container">
     <form>
-        <h2>Login</h2>
-        <label for="email">Email:</label>
-        <input type="text" name="email" required/>
-        <div class="email error"></div>
-        <label for="password">Password:</label>
-        <input type="password" name="password" required/>
-        <div class="password error"></div>
-        <button>Login</button>
+        <h2 class="anchor-wrapper">Login</h2>
+        <div class="inputs-container">
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="email">Email:</label>
+                    <input type="text" name="email" required />
+                </div>
+                <div class="email error"></div>
+            </div>
+            <div class="input-container">
+                <div class="input-text-container">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" required />
+                </div>
+                <div class="password error"></div>
+            </div>
+        </div>
+        <button class="anchor-wrapper">Login</button>
     </form>
-
-    <script>
+</div>
+<script>
         const form = document.querySelector("form");
     
         const emailSelector = document.querySelector(".email.error");
@@ -32,7 +43,6 @@
                     headers: { "Content-Type": "application/json" }
                 })
                 const data = await result.json();
-                console.log(data);
                 if (data.errors) {
                     emailSelector.textContent = data.errors.email;
                     passwordSelector.textContent = data.errors.password;

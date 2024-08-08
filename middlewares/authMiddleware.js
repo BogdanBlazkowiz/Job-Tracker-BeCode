@@ -3,10 +3,11 @@ const User = require("../schemas/User")
 
 const requireAuth = function (req, res, next) {
     const token = req.cookies.jwt;
-    console.log(token)
     // check token exists and is verified
     if (token) {
-        jwt.verify(token, "secretString", (err, decodedToken) => {
+        let secret_string;
+        secret_string = process.env.SECRET_STRING;
+        jwt.verify(token, secret_string, (err, decodedToken) => {
             if (err) {
                 res.redirect("/login");
             }
@@ -24,9 +25,11 @@ const requireAuth = function (req, res, next) {
 const checkUser = function (req, res, next) {
     const token = req.cookies.jwt;
     if (token) {
-        jwt.verify(token, "secretString", async (err, decodedToken) => {
+        let secret_string;
+        secret_string = process.env.SECRET_STRING;
+        jwt.verify(token, secret_string, async (err, decodedToken) => {
             if (err) {
-                res.locals.user = null;
+                res.locals.lastName = null;
                 next();
             }
             else {
@@ -38,7 +41,7 @@ const checkUser = function (req, res, next) {
         });
     }
     else {
-        res.locals.user = null;
+        res.locals.lastName = null;
         next();
     }
 }

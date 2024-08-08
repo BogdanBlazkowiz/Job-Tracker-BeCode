@@ -35,7 +35,12 @@ cvFileUpload = async (buffer) => {
 }
 
 profilePictureFileUpload = async (buffer) => {
-    const uploadedFile = await uploadStream(buffer, "image", "ProfilePicture")
+    try {
+        const uploadedFile = await uploadStream(buffer, "image", "ProfilePicture")
+    }
+    catch (err) {
+        console.log(err)
+    }
     return uploadedFile
 }
 
@@ -57,7 +62,6 @@ uploadFiles = async (req, res) => {
     if (cvFile) {
         upload1 = await cvFileUpload(cvFile.buffer);
     }
-    console.log(upload1)
     res.status(200).json({upload1, upload2});
 }
 

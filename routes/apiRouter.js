@@ -19,4 +19,5 @@ apiRouter.get(baseUrl + "logout", authController.logoutGet);
 apiRouter.get(baseUrl + "user", authController.getUser);
 apiRouter.post(baseUrl + "upload-file", uploadFields, storageController.uploadFiles)
 apiRouter.put(baseUrl + "change-files-account", uploadFields, authController.replaceCloudinaryFile);
+apiRouter.put(baseUrl + "change-password", authController.changePassword);
 module.exports = apiRouter;

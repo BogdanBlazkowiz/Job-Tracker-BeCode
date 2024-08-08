@@ -1,63 +1,143 @@
 $dark_dark_green: #000000;
 $dark_green: #2f3e68;
 $white: #e7e5e9d2;
-$yellow: #E98A15;
+$yellow: #e98a15;
 $yellow_light: #ffa332;
 $purple: #a32d8f;
-$blue: #24D0BE;
+$blue: #24d0be;
 $softer_blue: #24a8d0;
 
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-    font-family: 'Inconsolata';
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    font-family: "Inconsolata";
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
 }
 body {
-	line-height: 1;
+    line-height: 1;
 }
-ol, ul {
-	list-style: none;
+ol,
+ul {
+    list-style: none;
 }
-blockquote, q {
-	quotes: none;
+blockquote,
+q {
+    quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: "";
+    content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 a {
@@ -68,17 +148,33 @@ a {
 body {
     padding-left: 120px;
     padding-right: 120px;
-    background-image: linear-gradient(to bottom, #030024, #201f48, #423870, #695298, #946dc2, #a377d4, #b280e6, #c28af9, #b385f8, #a480f7, #927bf6, #7f77f5);
+    background-image: linear-gradient(
+        to bottom,
+        #030024,
+        #201f48,
+        #423870,
+        #695298,
+        #946dc2,
+        #a377d4,
+        #b280e6,
+        #c28af9,
+        #b385f8,
+        #a480f7,
+        #927bf6,
+        #7f77f5
+    );
 }
 
 .body-container {
     background-color: $white;
     z-index: -2;
-    height: 840px;
+    // height: 840px;
+    padding-bottom: 120px;
     border-radius: 120px;
 }
 
-header, footer {
+header,
+footer {
     padding-left: 120px;
     padding-right: 120px;
     div.nav-container {
@@ -86,7 +182,8 @@ header, footer {
     }
 }
 
-header, footer {
+header,
+footer {
     padding-top: 20px;
     padding-bottom: 20px;
     div {
@@ -108,12 +205,12 @@ header, footer {
             height: 52px;
             gap: 2px;
             .auth-link {
-                    margin-left: auto;
-                    text-align: right;
-                    height: 30px;
-                    .anchor-wrapper {
-                        height: 0px;
-                    }
+                margin-left: auto;
+                text-align: right;
+                height: 30px;
+                .anchor-wrapper {
+                    height: 0px;
+                }
             }
             .auth-container {
                 display: flex;
@@ -157,11 +254,15 @@ body {
 
 .anchor-wrapper {
     background-color: $softer_blue;
+    border: 1px solid $softer_blue;
     border-radius: 10px;
     height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.anchor-wrapper:hover {
+    opacity: 0.7;
 }
 
 .hidden {
@@ -180,32 +281,32 @@ body {
     .buttons-container {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 100px;
+        gap: 50px;
+        .create-dummy-job {
+            width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         .sort-container {
-            display: grid;
-            grid-template-columns: 65px 95px 65px 95px;
+            display: flex;
+            align-items: center;
             gap: 5px;
             .sort-select {
-                grid-column: 2/2;
                 width: 95px;
             }
-            .select-label {
-                grid-column: 1/1;
-                grid-row: 1/1;
-            }
-            .sort-order-select {
-                grid-column: 4/4;
-                grid-row: 1/1;
-            }
-            .select-order-label {
-                grid-column: 3/3;
-                grid-row: 1/1;
-            }
             .sort-button {
-                grid-row: 2/2;
-                grid-column: 2/3;
+                grid-column: 5/5;
                 border: 1px solid $softer_blue;
+            }
+        }
+        .pagination-container {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            .anchor-wrapper {
+                width: 15px;
+                height: 15px;
             }
         }
     }
@@ -218,7 +319,7 @@ body {
             transform: rotateX(180deg);
             z-index: 10;
             opacity: 1;
-            transition: opacity 1s cubic-bezier(.08,.82,.19,1);
+            transition: opacity 1s cubic-bezier(0.08, 0.82, 0.19, 1);
             h2 {
                 opacity: 1;
             }
@@ -226,7 +327,7 @@ body {
         .flipped-text {
             transform: rotateZ(180deg) rotateY(180deg);
         }
-        .card-container{
+        .card-container {
             .card-above-thing {
                 background-color: $yellow;
                 position: relative;
@@ -260,6 +361,17 @@ body {
                 .show-more {
                     grid-row: 2/2;
                 }
+                div {
+                    grid-row: 1/2;
+                    display: flex;
+                    flex-direction: column;
+                    overflow-x: hidden;
+                    height: 120px;
+                    .notes {
+                        width: 180px;
+                        white-space: pre-wrap;
+                    }
+                }
                 .delete {
                     grid-row: 3/3;
                 }
@@ -273,7 +385,8 @@ body {
                 position: relative;
                 top: -152px;
                 margin-bottom: -152px;
-                transition: transform 1s, z-index 1s, opacity 1s cubic-bezier(.84,.07,.42,.9);
+                transition: transform 1s, z-index 1s,
+                    opacity 1s cubic-bezier(0.84, 0.07, 0.42, 0.9);
                 transform-origin: bottom center;
                 perspective: 1500px;
                 z-index: -1;
@@ -292,8 +405,7 @@ body {
     }
 }
 
-
-.create-job-container {
+.form-container {
     form {
         display: flex;
         flex-direction: column;
@@ -306,6 +418,11 @@ body {
             padding-right: 5px;
         }
         a.anchor-wrapper {
+            // width: 70px;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        h2.anchor-wrapper {
             // width: 70px;
             padding-left: 5px;
             padding-right: 5px;
@@ -325,9 +442,11 @@ body {
                     justify-content: space-between;
                     width: 390px;
                     align-items: center;
-                    input {
+                    input,
+                    select {
                         outline: none;
                         height: 25px;
+                        max-width: 181px;
                         border-radius: 10px;
                         border: 1px solid silver;
                         padding-left: 5px;
@@ -351,4 +470,84 @@ body {
     position: absolute;
     top: -120px;
     left: -120px;
+}
+
+.user-container {
+    padding: 30px;
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    .delete-button {
+        background-color: red;
+        border-color: red;
+    }
+    .user-general-info-container {
+        background-color: $yellow_light;
+        width: max-content;
+        padding: 30px;
+        border-radius: 30px;
+        border: 1px solid black;
+        display: grid;
+        grid-template-columns: 256px 300px;
+        grid-template-rows: 256px 70px;
+        gap: 20px;
+        img {
+            width: 256px;
+            scale: crop;
+        }
+        .user-button-container {
+            grid-row: 1/1;
+            grid-column: 2/2;
+            margin-top: 200px;
+            border-radius: 15px;
+            background-color: $yellow;
+            border: 1px solid black;
+            width: 60px;
+            height: 70px;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            padding-left: 15px;
+            padding-right: 15px;
+            display: grid;
+            grid-template-rows: 40px 40px;
+        }
+        .user-info-container {
+            grid-row: 1/1;
+            grid-column: 2/2;
+            border-radius: 15px;
+            width: 300px;
+            height: 120px;
+            background-color: $yellow;
+            border: 1px solid black;
+            padding-top: 30px;
+            padding-left: 15px;
+            display: grid;
+            grid-template-rows: 40px 40px 40px;
+        }
+    }
+    .user-forms-container {
+        display: flex;
+        align-items: center;
+        gap: 120px;
+        background-color: $yellow_light;
+        padding: 30px;
+        border-radius: 30px;
+        border: 1px solid black;
+        .form-container {
+            border: 1px solid black;
+            border-radius: 15px;
+            padding: 10px;
+            form {
+                padding-top: 0px;
+                .form-buttons {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 20px;
+                }
+            }
+        }
+    }
 }
