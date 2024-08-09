@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inconsolata:wght@200..900&family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -140,23 +141,27 @@ a {
   color: inherit;
 }
 
+html {
+  height: 100vh;
+}
+
 body {
   padding-left: 120px;
   padding-right: 120px;
   padding-bottom: 30px;
   background-image: linear-gradient(to bottom, #030024, #201f48, #423870, #695298, #946dc2, #a377d4, #b280e6, #c28af9, #b385f8, #a480f7, #927bf6, #7f77f5);
   background-repeat: no-repeat;
-  height: -moz-max-content;
-  height: max-content;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 92px 1fr 92px;
 }
 
 .body-container {
   background-color: rgba(231, 229, 233, 0.8235294118);
-  z-index: -2;
   padding-bottom: 120px;
   border-radius: 120px;
-  height: -moz-fit-content;
-  height: fit-content;
+  height: calc(100vh - 184px);
+  width: calc(100vw - 240px);
 }
 
 header,
@@ -164,9 +169,24 @@ footer {
   padding-left: 120px;
   padding-right: 120px;
 }
-header div,
-footer div {
+header .nav-container,
+footer .nav-container {
   background-color: #2f3e68;
+}
+
+footer > .nav-container {
+  background-color: #2f3e68;
+}
+
+header .logo {
+  font-family: "Bebas Neue";
+  font-size: 200%;
+  color: #24d0be;
+}
+header .logo .logo-span {
+  font-size: inherit;
+  font-family: "Bebas Neue";
+  color: #24a8d0;
 }
 
 header,
@@ -174,44 +194,52 @@ footer {
   padding-top: 20px;
   padding-bottom: 20px;
 }
-header div,
-footer div {
+header div.nav-container,
+footer div.nav-container {
   height: 32px;
   border-radius: 10px;
   padding: 10px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
-header div img,
-footer div img {
+header div.nav-container img,
+footer div.nav-container img {
   width: 32px;
   height: 32px;
 }
-header div .site-title,
-footer div .site-title {
+header div.nav-container .site-title,
+footer div.nav-container .site-title {
   margin: auto auto;
 }
-header div ul,
-footer div ul {
+header div.nav-container ul,
+footer div.nav-container ul {
   display: flex;
   flex-direction: column;
-  height: 52px;
+  height: 40px;
   gap: 2px;
 }
-header div ul .auth-link,
-footer div ul .auth-link {
-  margin-left: auto;
-  text-align: right;
-  height: 30px;
-}
-header div ul .auth-link .anchor-wrapper,
-footer div ul .auth-link .anchor-wrapper {
-  height: 0px;
-}
-header div ul .auth-container,
-footer div ul .auth-container {
+header div.nav-container ul .auth-container,
+footer div.nav-container ul .auth-container {
   display: flex;
   gap: 10px;
+  padding: 5px;
+  height: 32px;
+}
+header div.nav-container ul .auth-container .auth-link,
+footer div.nav-container ul .auth-container .auth-link {
+  margin-left: auto;
+  text-align: right;
+  height: 20px;
+}
+header div.nav-container ul > li.auth-link,
+footer div.nav-container ul > li.auth-link {
+  width: 60px;
+  height: 20px;
+}
+header div.nav-container ul > li.auth-link div.anchor-wrapper,
+footer div.nav-container ul > li.auth-link div.anchor-wrapper {
+  height: 100%;
 }
 header .footer-container,
 footer .footer-container {
@@ -319,6 +347,7 @@ footer .footer-container {
     display: grid;
     grid-template-columns: 120px 240px 480px;
     grid-template-rows: 120px 240px;
+    height: 52vh;
     gap: 20px;
   }
   body .home-container .welcome-home {
