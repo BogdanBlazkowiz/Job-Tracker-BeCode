@@ -145,13 +145,10 @@ a {
     text-decoration: none;
     color: inherit;
 }
-html {
-    height: 100vh;
-}
 body {
     padding-left: 120px;
     padding-right: 120px;
-    padding-bottom: 30px;
+    // padding-bottom: 30px;
     background-image: linear-gradient(
         to bottom,
         #030024,
@@ -168,7 +165,7 @@ body {
         #7f77f5
     );
     background-repeat: no-repeat;
-    height: 100%;
+    height: fit-content;
     display: grid;
     grid-template-rows: 92px 1fr 92px;
 }
@@ -177,7 +174,7 @@ body {
     background-color: $white;
     padding-bottom: 120px;
     border-radius: 120px;
-    height: calc(100vh - 184px);
+    height: fit-content;
     width: calc(100vw - 240px);
 }
 
@@ -186,6 +183,9 @@ footer {
     padding-left: 120px;
     padding-right: 120px;
     .nav-container {
+        a {
+            color: white;
+        }
         background-color: $dark_blue;
     }
 }

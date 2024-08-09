@@ -141,17 +141,13 @@ a {
   color: inherit;
 }
 
-html {
-  height: 100vh;
-}
-
 body {
   padding-left: 120px;
   padding-right: 120px;
-  padding-bottom: 30px;
   background-image: linear-gradient(to bottom, #030024, #201f48, #423870, #695298, #946dc2, #a377d4, #b280e6, #c28af9, #b385f8, #a480f7, #927bf6, #7f77f5);
   background-repeat: no-repeat;
-  height: 100%;
+  height: -moz-fit-content;
+  height: fit-content;
   display: grid;
   grid-template-rows: 92px 1fr 92px;
 }
@@ -160,7 +156,8 @@ body {
   background-color: rgba(231, 229, 233, 0.8235294118);
   padding-bottom: 120px;
   border-radius: 120px;
-  height: calc(100vh - 184px);
+  height: -moz-fit-content;
+  height: fit-content;
   width: calc(100vw - 240px);
 }
 
@@ -172,6 +169,10 @@ footer {
 header .nav-container,
 footer .nav-container {
   background-color: #2f3e68;
+}
+header .nav-container a,
+footer .nav-container a {
+  color: white;
 }
 
 footer > .nav-container {
