@@ -35,10 +35,10 @@ module.exports.getJobs = async (req, res) => {
     let sortType;
     let sortOrder;
     req.query.pageNumber
-        ? (pageNumber = req.query.pageNumber)
+        ? (pageNumber = parseInt(req.query.pageNumber))
         : (pageNumber = 1);
     req.query.maxPerPage
-        ? (maxPerPage = req.query.maxPerPage)
+        ? (maxPerPage = parseInt(req.query.maxPerPage))
         : (maxPerPage = 12);
     req.query.sortType
         ? (sortType = req.query.sortType)

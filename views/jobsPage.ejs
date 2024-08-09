@@ -2,14 +2,14 @@
 <div class="modal-curtain"></div>
 <div class="jobs-container">
     <div class="buttons-container">
-        <div class="anchor-wrapper create-job">
+        <div class="anchor-wrapper button-hover-class create-job">
             <a href="/create-job">Add new job</a>
         </div>
-        <div class="anchor-wrapper create-dummy-job">
+        <div class="anchor-wrapper button-hover-class create-dummy-job">
             <span href="/jobs" class="create-dummy-job">Add dummy job</span>
         </div>
         <div class="pagination-container">
-            <span class="anchor-wrapper pagination-button minus">-</span><span class="current-page" value="">1</span>/<span class="max-page"></span><span class="anchor-wrapper pagination-button plus">+</span>
+            <span>Page:</span><span class="anchor-wrapper pagination-button minus">-</span><span class="current-page" value="">1</span>/<span class="max-page"></span><span class="anchor-wrapper pagination-button plus">+</span>
         </div>
         <div class="sort-container">
             <label class="select-label" for="sort-type">Sort by:</label>
@@ -26,7 +26,7 @@
                 <option value="1">Asc</option>
                 <option value="-1">Desc</option>
             </select>
-            <button class="anchor-wrapper sort-button">Sort</button>
+            <button class="anchor-wrapper button-hover-class sort-button">Sort</button>
         </div>
     </div>
     <ul class="job-card-container">
@@ -153,7 +153,8 @@
             const sortType = document.querySelector("#sort-type").value;
             const sortOrder = document.querySelector("#sort-order").value;
             const pageNumber = currentPage.innerText;
-            const result = await fetch(`/api/jobs?sortType=${sortType}&sortOrder=${sortOrder}&pageNumber=${pageNumber}`, {
+            const maxPerPage = (window.innerWidth > 375) ? 12 : 6
+            const result = await fetch(`/api/jobs?sortType=${sortType}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&maxPerPage=${maxPerPage}`, {
                 method: "GET"
             })
             const jobsWithMetadata = await result.json();

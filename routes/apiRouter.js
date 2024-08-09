@@ -2,7 +2,7 @@ const { Router } = require("express");
 const jobController = require("../controllers/jobController.js")
 const authController = require("../controllers/authController.js")
 const storageController = require("../controllers/storageController.js")
-const { uploadFields, uploadCv, uploadPfp } = require("../storage/storage.js");
+const { uploadFields } = require("../storage/storage.js");
 
 const apiRouter = Router();
 const baseUrl = "/api/";

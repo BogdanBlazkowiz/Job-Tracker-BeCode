@@ -144,6 +144,7 @@ body {
   padding-left: 120px;
   padding-right: 120px;
   background-image: linear-gradient(to bottom, #030024, #201f48, #423870, #695298, #946dc2, #a377d4, #b280e6, #c28af9, #b385f8, #a480f7, #927bf6, #7f77f5);
+  background-repeat: no-repeat;
 }
 
 .body-container {
@@ -158,8 +159,8 @@ footer {
   padding-left: 120px;
   padding-right: 120px;
 }
-header div.nav-container,
-footer div.nav-container {
+header div,
+footer div {
   background-color: #2f3e68;
 }
 
@@ -207,39 +208,134 @@ footer div ul .auth-container {
   display: flex;
   gap: 10px;
 }
-
-body {
-  overflow-x: hidden;
-}
-body .home-container {
-  padding-top: 120px;
-  padding-left: 120px;
-  padding-right: 120px;
-  display: grid;
-  grid-template-columns: 120px 240px 480px;
-  grid-template-rows: 120px 240px;
-  gap: 20px;
-}
-body .home-container .welcome-home {
-  font-size: 200%;
-  grid-column: 1/1;
-  grid-row: 1/1;
-}
-body .home-container .home-nav {
-  grid-column: 1/1;
-  grid-row: 2/2;
-  width: 200px;
-  height: 100px;
+header .footer-container,
+footer .footer-container {
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 20px;
-}
-body .home-container .home-text {
-  grid-column: 3/4;
-  grid-row: 1/2;
 }
 
+@media screen and (max-width: 375px) {
+  header,
+  footer {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  header,
+  footer {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  header div,
+  footer div {
+    height: 72px;
+    border-radius: 10px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 32px 32px 32px 32px 32px;
+    grid-template-rows: 32px 32px;
+    gap: 4px;
+  }
+  header div img,
+  footer div img {
+    width: 32px;
+    height: 32px;
+    grid-column: 1/1;
+  }
+  header div .site-title,
+  footer div .site-title {
+    grid-column: 3/3;
+  }
+  header div nav,
+  footer div nav {
+    grid-column: 1/1;
+    grid-row: 2/2;
+  }
+  header div ul,
+  footer div ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 52px;
+    width: -moz-fit-content;
+    width: fit-content;
+    gap: 2px;
+  }
+  header div ul a,
+  footer div ul a {
+    width: 140px;
+  }
+  header div ul .auth-link,
+  footer div ul .auth-link {
+    margin-left: auto;
+    text-align: right;
+    height: 30px;
+  }
+  header div ul .auth-link .anchor-wrapper,
+  footer div ul .auth-link .anchor-wrapper {
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  header div ul .auth-container,
+  footer div ul .auth-container {
+    display: flex;
+    gap: 10px;
+    height: 14px;
+  }
+  header div ul .auth-container .auth-link,
+  footer div ul .auth-container .auth-link {
+    margin-left: auto;
+    text-align: right;
+    height: 30px;
+  }
+  header div ul .auth-container .auth-link .anchor-wrapper,
+  footer div ul .auth-container .auth-link .anchor-wrapper {
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  header div ul .auth-container .auth-link .anchor-wrapper a,
+  footer div ul .auth-container .auth-link .anchor-wrapper a {
+    text-align: center;
+  }
+}
+@media screen and (min-width: 376px) {
+  body {
+    overflow-x: hidden;
+  }
+  body .home-container {
+    padding-top: 120px;
+    padding-left: 120px;
+    padding-right: 120px;
+    display: grid;
+    grid-template-columns: 120px 240px 480px;
+    grid-template-rows: 120px 240px;
+    gap: 20px;
+  }
+  body .home-container .welcome-home {
+    font-size: 200%;
+    grid-column: 1/1;
+    grid-row: 1/1;
+  }
+  body .home-container .home-nav {
+    grid-column: 1/1;
+    grid-row: 2/2;
+    width: 200px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  body .home-container .home-text {
+    grid-column: 3/4;
+    grid-row: 1/2;
+  }
+}
 .anchor-wrapper {
   background-color: #24a8d0;
   border: 1px solid #24a8d0;
@@ -250,7 +346,7 @@ body .home-container .home-text {
   align-items: center;
 }
 
-.anchor-wrapper:hover {
+.button-hover-class:hover {
   opacity: 0.7;
 }
 
@@ -468,7 +564,7 @@ body .home-container .home-text {
   background-color: #ffa332;
   width: -moz-max-content;
   width: max-content;
-  padding: 30px;
+  padding: 15px;
   border-radius: 30px;
   border: 1px solid black;
   display: grid;
@@ -487,7 +583,7 @@ body .home-container .home-text {
   border-radius: 15px;
   background-color: #e98a15;
   border: 1px solid black;
-  width: 60px;
+  width: 70px;
   height: 70px;
   padding-top: 15px;
   padding-bottom: 15px;
@@ -500,12 +596,13 @@ body .home-container .home-text {
   grid-row: 1/1;
   grid-column: 2/2;
   border-radius: 15px;
-  width: 300px;
+  width: 270px;
   height: 120px;
   background-color: #e98a15;
   border: 1px solid black;
   padding-top: 30px;
   padding-left: 15px;
+  padding-right: 15px;
   display: grid;
   grid-template-rows: 40px 40px 40px;
 }
@@ -531,4 +628,134 @@ body .home-container .home-text {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+}
+
+@media screen and (max-width: 375px) {
+  body {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  .body-container {
+    border-radius: 60px;
+    padding-bottom: 60px;
+  }
+  .user-container .user-general-info-container {
+    width: 285px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 11px;
+  }
+  .user-container .user-general-info-container .user-info-container {
+    width: 270px;
+  }
+  .user-container .user-general-info-container .user-button-container {
+    margin-top: 0px;
+  }
+  .user-container .user-forms-container {
+    flex-direction: column;
+    width: 285px;
+    padding: 11px;
+  }
+  .user-container .user-forms-container .form-container {
+    width: -moz-max-content;
+    width: max-content;
+  }
+  .user-container .user-forms-container .form-container form {
+    width: 270px;
+  }
+  .user-container .user-forms-container .input-text-container {
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: 375px) {
+  body {
+    overflow-y: auto;
+    height: auto;
+  }
+  .home-container {
+    padding-top: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  .home-container .welcome-home {
+    font-size: 200%;
+  }
+  .home-container .home-nav {
+    width: 200px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .jobs-container {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .jobs-container .anchor-wrapper {
+    width: 100px;
+  }
+  .jobs-container .buttons-container {
+    display: grid;
+    width: 270px;
+    grid-template-columns: 32px 32px 32px 32px;
+    grid-template-rows: 32px 32px;
+    gap: 10px;
+  }
+  .jobs-container .buttons-container .create-job {
+    grid-column: 1/1;
+  }
+  .jobs-container .buttons-container .create-dummy-job {
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: 4/4;
+  }
+  .jobs-container .buttons-container .sort-container {
+    grid-row: 2/2;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .jobs-container .buttons-container .sort-container .sort-select {
+    width: 95px;
+  }
+  .jobs-container .buttons-container .sort-container .sort-button {
+    grid-column: 5/5;
+    border: 1px solid #24a8d0;
+  }
+  .jobs-container .buttons-container .pagination-container {
+    display: flex;
+    align-items: center;
+    grid-row: 3/3;
+    gap: 2px;
+  }
+  .jobs-container .buttons-container .pagination-container .anchor-wrapper {
+    width: 15px;
+    height: 15px;
+  }
+  .jobs-container .job-card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+@media screen and (max-width: 375px) {
+  .input-text-container {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .input-text-container input {
+    width: 240px;
+  }
 }/*# sourceMappingURL=styles.css.map */
