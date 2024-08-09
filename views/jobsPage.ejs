@@ -30,7 +30,7 @@
         </div>
     </div>
     <ul class="job-card-container">
-        <% for (let i = 0; i < maxPerPage; i++) { %>
+        <% for (let i = 0; i < 20; i++) { %>
         <div class="card-container hidden">
             <div class="card-above-thing">
                 <h2 class="position"></h2>
@@ -153,7 +153,11 @@
             const sortType = document.querySelector("#sort-type").value;
             const sortOrder = document.querySelector("#sort-order").value;
             const pageNumber = currentPage.innerText;
-            const maxPerPage = (window.innerWidth > 375) ? 12 : 6
+            let maxPerPage = (window.innerWidth > 375) ? 12 : 6
+            if (window.innerWidth >= 1920) {
+                maxPerPage = 20;
+            }
+            console.log(maxPerPage)
             const result = await fetch(`/api/jobs?sortType=${sortType}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&maxPerPage=${maxPerPage}`, {
                 method: "GET"
             })
