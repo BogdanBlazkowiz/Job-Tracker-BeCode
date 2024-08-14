@@ -1,15 +1,8 @@
 # Job-Tracker-BeCode
 
-## Repository for my job tracker project, includes my backend and DB code and Sloane's front-end.
+## Repository for my job tracker project.
 
 
-/api/jobs, jobController.getJobs);
-/api/jobs, jobController.postJob);
-/api/jobs/:id", jobController.updateJob);
-/api/jobs/:id", jobController.deleteJob);
-/api/jobs/:id", jobController.getJob);
-/api/signup", uploadFields, authController.signupPost);
-/api/login", authController.loginPost);
-/api/upload-file", storageController.uploadFiles)
-/api/change-profile-picture", authController.replaceCloudinaryFile);
-/api/change-cv", authController.replaceCloudinaryFile);
+Realized using Express for the backend, mongoDb as the database of choice thanks to Atlas and simple ejs and css.
+Simple CRUD, user login/register, it keeps in memory job applications that the user saves for later.
+Not the most practical to use, but a good exercise.
